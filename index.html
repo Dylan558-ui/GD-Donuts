@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>G&D Donuts – Mini Donas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: sans-serif; background: #fffaf0; padding: 20px; }
+    h1 { color: #d6336c; }
+    .card { background: white; border-radius:8px; padding:15px; margin-bottom:20px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    label { display:flex; justify-content:space-between; margin:5px 0; }
+    select, input[type=number] { width:100%; margin-bottom:10px; padding:8px; border-radius:4px; }
+    button { background:#d6336c; color:white; border:none; padding:12px; width:100%; font-size:16px; border-radius:5px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <h1>🍩 G&D Donuts</h1>
+
+  <div class="card">
+    <h2>Presentación</h2>
+    <select id="presentacion">
+      <option value="Individual">Individual (bolsa)</option>
+      <option value="Caja x4">Caja x4</option>
+      <option value="Caja x6">Caja x6</option>
+      <option value="Caja x8">Caja x8</option>
+      <option value="Caja x9">Caja x9</option>
+      <option value="Caja x12">Caja x12</option>
+      <option value="Caja x14">Caja x14</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <h2>Donas Glaseadas</h2>
+    <label>Baño:
+      <select id="glaseado">
+        <option value="Chocolate oscuro">Chocolate oscuro</option>
+        <option value="Chocolate blanco">Chocolate blanco</option>
+      </select>
+    </label>
+    <label><input type="checkbox" value="M&M"> M&M</label>
+    <label><input type="checkbox" value="Jumbo blanco"> Jumbo blanco</label>
+    <label><input type="checkbox" value="Galleta Oreo"> Galleta Oreo</label>
+    <label><input type="checkbox" value="Masmelo"> Masmelo</label>
+    <label><input type="checkbox" value="Piazza"> Piazza</label>
+    <label><input type="checkbox" value="Chocolate Gol"> Chocolate Gol</label>
+  </div>
+
+  <div class="card">
+    <h2>Donas No Bañadas</h2>
+    <label>Salsa:
+      <select id="salsa">
+        <option value="Arequipe">Arequipe</option>
+        <option value="Chocolate">Chocolate</option>
+      </select>
+    </label>
+    <label><input type="checkbox" value="Fresas"> Fresas</label>
+    <label><input type="checkbox" value="Oreo"> Oreo</label>
+    <label><input type="checkbox" value="Chocolate chiquito"> Chocolate chiquito</label>
+  </div>
+
+  <div class="card">
+    <h2>Relleno (+$500 c/u)</h2>
+    <select id="relleno">
+      <option value="Sin relleno">Sin relleno</option>
+      <option value="Chocolate blanco">Chocolate blanco</option>
+      <option value="Chocolate negro">Chocolate negro</option>
+      <option value="Chantilly">Chantilly</option>
+      <option value="Arequipe">Arequipe</option>
+    </select>
+  </div>
+
+  <button onclick="enviarPedido()">Enviar por WhatsApp</button>
+
+  <script>
+    function enviarPedido() {
+      const pres = document.getElementById('presentacion').value;
+      const glaseado = document.getElementById('glaseado').value;
+      const salsa = document.getElementById('salsa').value;
+      const relleno = document.getElementById('relleno').value;
+
+      const glaseToppings = Array.from(document.querySelectorAll('.card:nth-of-type(2) input:checked')).map(i => i.value);
+      const noGlaseToppings = Array.from(document.querySelectorAll('.card:nth-of-type(3) input:checked')).map(i => i.value);
+
+      let msg = `Hola, quiero pedir:\n- Presentación: ${pres}\n`;
+
+      if (glaseToppings.length) msg += `- Donas glaseadas (${glaseado}), toppings: ${glaseToppings.join(', ')}\n`;
+      if (noGlaseToppings.length) msg += `- Donas no bañadas (salsa ${salsa}), toppings: ${noGlaseToppings.join(', ')}\n`;
+      if (relleno !== 'Sin relleno') msg += `- Relleno: ${relleno} (+$500 c/u)\n`;
+
+      const num = '573183910014';
+      const url = `https://wa.me/${num}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    }
+  </script>
+</body>
+</html>
